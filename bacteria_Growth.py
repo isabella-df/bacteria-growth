@@ -6,3 +6,5 @@ Created on Thu Oct 28 10:29:57 2021
 """
 
 import numpy as np
+
+#why do birds suddenly appearrrrrr
