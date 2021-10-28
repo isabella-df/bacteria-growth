@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.pyplot
 
 def dataLoad(filename):
     mat1=np.loadtxt(filename)
@@ -49,4 +51,28 @@ def dataStatistics(data, statistic):
         result = hotData[:,1].mean()
     return result
 
-print(dataStatistics(data, "Rows"))
+#print(dataStatistics(data, "Rows"))
+
+data = dataLoad("test2.txt")
+def dataPlot(data):
+    salmonella=0
+    bacillus=0
+    listeria=0
+    brocothrix=0
+    for i in data:
+        if data[:,2] ==1:
+            salmonella=salmonella+1
+        if data[:,2] ==2:
+            bacillus=bacillus+1
+        if data[:,2] ==3:
+            listeria=listeria+1
+        if data[:,2] == 4:
+            brocothrix=brocothrix+1
+    dataPoints = {'Salomenlla enterica':salmonella,"Bacillus cereus":bacillus, "Listeria":listeria, "Brocothrix thermosphacta":brocothrix}
+    bacteriaNames = list(dataPoints.keys())
+    bacteriaNumbers = list(dataPoints.values())
+    plt.bar(bacteriaNames, bacteriaNumbers, color ='maroon', width = 0.4)
+    plt.xlabel("Bacteria names")
+    plt.ylabel("No. of bacteria")
+    plt.title("Amount of bacteria in experiment")
+    plt.show()
