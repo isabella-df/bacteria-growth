@@ -101,7 +101,7 @@ def dataPlot(data):
     plt.xlabel('Temperature')
     plt.ylabel('Growth Rate')
     plt.xlim(10,60)
-    plt.ylim(0, 600)
+    plt.ylim(0, 1)
     plt.title('Growth rate vs Temp')
     plt.show()
 print(dataPlot(data))
