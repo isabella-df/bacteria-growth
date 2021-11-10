@@ -54,6 +54,11 @@ def dataStatistics(data, statistic):
 
 data = dataLoad("testforreals.txt")
 def dataPlot(data):
+    #sorting data according to temperature
+    srt = np.argsort(data[:,0])
+    switch = srt[::-1]
+    data = data[switch]
+    #plotting the bar    
     salmonella=0
     bacillus=0
     listeria=0
@@ -75,7 +80,7 @@ def dataPlot(data):
     plt.ylabel("No. of bacteria")
     plt.title("Amount of bacteria in experiment")
     plt.show()   
-    #scatter
+    #plotting the scatter
     Temperature1=[]
     Growth1=[]
     Temperature2=[]
@@ -97,11 +102,21 @@ def dataPlot(data):
         if i[2]==4:
            Temperature4.append(i[0])
            Growth4.append(i[1])
-    plt.plot(Temperature1,Growth1, 'r-',Temperature2,Growth2,'b-',Temperature3,Growth3,'g-',Temperature4,Growth4,'p-')
+    plt.plot(Temperature1,Growth1, 'r-',label='Salmonella')
+    plt.plot(Temperature2,Growth2,'b-',label='Bacillus')
+    plt.plot(Temperature3,Growth3,'g-',label='Listeria')
+    plt.plot(Temperature4,Growth4,'y-',label='Brocothrix')
     plt.xlabel('Temperature')
     plt.ylabel('Growth Rate')
     plt.xlim(10,60)
     plt.ylim(0, 1)
     plt.title('Growth rate vs Temp')
+    plt.legend(loc="upper right")
     plt.show()
-print(dataPlot(data))
+    #print(np.sort(Temperature1))
+    #print(Temperature2)
+    #print(Temperature3)
+    #print(Temperature4)
+   # print(data)
+#print(dataPlot(data))
+print(data)
