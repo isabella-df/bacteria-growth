@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
+filenamein=input('Please enter filename:')
 def dataLoad(filename):
     mat1=np.loadtxt(filename)
     #Made matrix from txt file
@@ -26,8 +26,7 @@ def dataLoad(filename):
             data=np.vstack((data,row))           
     return data[1:,:]
 #print(dataLoad('testforreals.txt'))
-data = dataLoad("testforreals.txt")
-
+data=dataLoad(filenamein)
 def dataStatistics(data, statistic):
     if statistic == 'Mean Temperature':
     #takes the mean of the 0th column     
@@ -52,7 +51,7 @@ def dataStatistics(data, statistic):
 
 #print(dataStatistics(data, "Rows"))
 
-data = dataLoad("testforreals.txt")
+data = dataLoad(filenamein)
 def dataPlot(data):
     #sorting data according to temperature
     srt = np.argsort(data[:,0])
@@ -118,5 +117,6 @@ def dataPlot(data):
     #print(Temperature3)
     #print(Temperature4)
    # print(data)
-#print(dataPlot(data))
+print(dataPlot(data))
 print(data)
+print(dataStatistics(data,'Mean Temperature'))
