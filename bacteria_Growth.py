@@ -164,6 +164,12 @@ while loop:
             print('Data Filter has been selected')
             #filter by bacteria type
             x21 = input("Would you like to filter by bacteria type: ")
+            while ((x21.lower()!='yes') and (x21.lower()!='no')):
+                try: 
+                    x21=input('Error, please input yes or no:')
+                except ValueError:
+                    pass
+            #carry out function when yes        
             if x21.lower() == "yes":
                 print("Bacteria 1 corresponds to Salmonella enterica.")
                 print("Bacteria 2 corresponds to Bacillus cereus.")
@@ -173,10 +179,20 @@ while loop:
                 bacteria = int(input("What numerical value of bacteria would you like to filter the data to: "))
                 #an empty array with arbitrary values inorder to stack
                 data1 = [-1,-1,-1]
+                #if a number that is not an integer between 1-4 is entered then we print an error message
+                while (bacteria!=1 and bacteria!=2 and bacteria!=3 and bacteria!=4):
+                    try:
+                        bacteria=int(input('Error! Please input  an integer value from 1-4!:'))
+                    except ValueError:
+                        pass
                 for x in data:
                     if x[2] == bacteria:
                         data1=np.vstack((data1,x))
+                print('Bacteria Filter Applied')
                 data = data1[1:,:]
+            if x21.lower() == "no":
+                pass
+            
             #filtering by growth rate
             
             
@@ -200,4 +216,4 @@ while loop:
         loop=False 
     else:
         print("Please choose a number from 1-5. Press any key to try again.")
-print(data)
+#print(data)
