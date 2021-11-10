@@ -12,7 +12,7 @@ def dataLoad(filename):
         t=t+1
         datarowisvalid=True
 #all below if statements set datarowisvalid=false if the values do not meet the given specifications e.g. GrowthRate is negative.
-        if row[0]<10 or row[0]>60:
+        if row[0]<=10 or row[0]>=60:
            datarowisvalid=False
            print('Error in row',t,'Temperature')
         if row[1]<0:
