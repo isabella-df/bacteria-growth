@@ -1,24 +1,10 @@
+#importing libraries
+
 import numpy as np
 import matplotlib.pyplot as plt
+import os.path
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-filenamein=input('Please enter filename:')
 def dataLoad(filename):
     mat1=np.loadtxt(filename)
     #Made matrix from txt file
@@ -44,7 +30,6 @@ def dataLoad(filename):
             data=np.vstack((data,row))           
     return data[1:,:]
 #print(dataLoad('testforreals.txt'))
-data=dataLoad(filenamein)
 def dataStatistics(data, statistic):
     if statistic == 'Mean Temperature':
     #takes the mean of the 0th column     
@@ -68,8 +53,6 @@ def dataStatistics(data, statistic):
     return result
 
 #print(dataStatistics(data, "Rows"))
-
-data = dataLoad(filenamein)
 def dataPlot(data):
     #sorting data according to temperature
     srt = np.argsort(data[:,0])
@@ -137,4 +120,84 @@ def dataPlot(data):
    # print(data)
 #print(dataPlot(data))
 #print(data)
-print(dataStatistics(data,'Mean Temperature'))
+#print(dataStatistics(data,'Mean Temperature'))
+def print_menu():
+    print(20*"-","Welcome to the action menu!",20*"-")
+    print("1. Load Data")
+    print("2. Filter Data")
+    print("3. Display Statistics")
+    print("4. Generate Plots")
+    print("5. Quit")
+    print (67*"-")
+
+data=[]
+dataEmpty=[]
+#data and dataEmpty are empty arrays where data will no longer be empty if data is loaded successfully.
+loop=True
+
+
+
+#
+while loop:
+    #prints action menut
+    print_menu()
+    selection = int(input("Please select a number (1-5) from above:"))
+    if selection==1:
+        print("Load Data has been selected")
+        filename=input('Please enter the name of the file you wish to use: ')
+        
+        #prints error if file can not be found, asks for valid file input
+        while not(os.path.isfile(filename)):
+            try:
+                filename = input('File not found. Please input valid filename:')
+                data=dataLoad(filename)
+            except ValueError:
+                pass        
+        data=dataLoad(filename)
+        print('Data Loaded successfully!')
+                
+    elif selection==2:
+        if np.array_equal(data,dataEmpty):
+#If data = dataEmpty, data has not been loaded and the functon will loop back to original menu.  
+            print('Error please load data first!')
+        else:
+            print('Data Filter has been selected')
+            #filter by bacteria type
+            x21 = input("Would you like to filter by bacteria type: ")
+            if x21.lower() == "yes":
+                print("Bacteria 1 corresponds to Salmonella enterica.")
+                print("Bacteria 2 corresponds to Bacillus cereus.")
+                print("Bacteria 3 corresponds to Listeria.")
+                print("Bacteria 4 corresponds to Brochothrix thermosphacta.")
+                #make bacteria input an integer
+                bacteria = int(input("What numerical value of bacteria would you like to filter the data to: "))
+                #an empty array with arbitrary values inorder to stack
+                data1 = [-1,-1,-1]
+                for x in data:
+                    if x[2] == bacteria:
+                        data1=np.vstack((data1,x))
+                data = data1[1:,:]
+            #filtering by growth rate
+            
+            
+            
+            #print(data1)
+            #print(data)
+    elif selection==3:
+        if np.array_equal(data,dataEmpty):
+           print('Error please load data first!')
+        else:
+            print("Display Statistics has been selected")
+            #needs another option menu to have an input for statistic
+           # print(dataStatistics(data,statistic))
+    elif selection==4:
+        if np.array_equal(data,dataEmpty):
+           print('Error please load data first!')
+        else:
+            print(dataPlot(data))        
+    elif selection==5:
+        print("Quit has been selected")
+        loop=False 
+    else:
+        print("Please choose a number from 1-5. Press any key to try again.")
+print(data)
