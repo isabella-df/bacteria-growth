@@ -1,9 +1,7 @@
 #importing libraries
-
 import numpy as np
 import matplotlib.pyplot as plt
 import os.path
-
 
 def dataLoad(filename):
     mat1=np.loadtxt(filename)
@@ -22,14 +20,16 @@ def dataLoad(filename):
         if row[1]<0:
             datarowisvalid=False
             print('Error in row',t,'Growth Rate')
-        if row[2]<1 or row[2]>4:
+        if row[2]!=1 and row[2]!=2 and row[2]!=3 and row[2]!=4:
             datarowisvalid=False
             print('Error in row',t,'Bacteria')
         if datarowisvalid:
 #takes every row where the datarowisvalid=true and stacks it in a matrix
-            data=np.vstack((data,row))           
-    return data[1:,:]
+            data=np.vstack((data,row))      
+    data = data[1:,:]
+    return data
 #print(dataLoad('testforreals.txt'))
+
 def dataStatistics(data, statistic):
     if statistic == 'Mean Temperature':
     #takes the mean of the 0th column     
@@ -51,8 +51,9 @@ def dataStatistics(data, statistic):
         hotData = data[data[:,0]>50]
         result = hotData[:,1].mean()
     return result
-
+#data = dataLoad("testforreals.txt")
 #print(dataStatistics(data, "Rows"))
+
 def dataPlot(data):
     #sorting data according to temperature
     srt = np.argsort(data[:,0])
@@ -121,6 +122,7 @@ def dataPlot(data):
 #print(dataPlot(data))
 #print(data)
 #print(dataStatistics(data,'Mean Temperature'))
+
 def print_menu():
     print(20*"-","Welcome to the action menu!",20*"-")
     print("1. Load Data")
@@ -132,12 +134,9 @@ def print_menu():
 
 data=[]
 dataEmpty=[]
-#data and dataEmpty are empty arrays where data will no longer be empty if data is loaded successfully.
+#data and dataEmpty are temporary empty arrays where data will no longer be empty if data is loaded successfully.
 loop=True
 
-
-
-#
 while loop:
     #prints action menut
     print_menu()
@@ -163,14 +162,14 @@ while loop:
         else:
             print('Data Filter has been selected')
             #filter by bacteria type
-            x21 = input("Would you like to filter by bacteria type: ")
-            while ((x21.lower()!='yes') and (x21.lower()!='no')):
+            x1 = input("Would you like to filter by bacteria type: ")
+            while ((x1.lower()!='yes') and (x1.lower()!='no')):
                 try: 
-                    x21=input('Error, please input yes or no:')
+                    x1=input('Error, please input yes or no: ')
                 except ValueError:
                     pass
             #carry out function when yes        
-            if x21.lower() == "yes":
+            if x1.lower() == "yes":
                 print("Bacteria 1 corresponds to Salmonella enterica.")
                 print("Bacteria 2 corresponds to Bacillus cereus.")
                 print("Bacteria 3 corresponds to Listeria.")
@@ -182,7 +181,7 @@ while loop:
                 #if a number that is not an integer between 1-4 is entered then we print an error message
                 while (bacteria!=1 and bacteria!=2 and bacteria!=3 and bacteria!=4):
                     try:
-                        bacteria=int(input('Error! Please input  an integer value from 1-4!:'))
+                        bacteria=int(input('Error! Please input an integer value from 1-4!: '))
                     except ValueError:
                         pass
                 for x in data:
@@ -190,13 +189,30 @@ while loop:
                         data1=np.vstack((data1,x))
                 print('Bacteria Filter Applied')
                 data = data1[1:,:]
-            if x21.lower() == "no":
+            if x1.lower() == "no":
                 pass
             
             #filtering by growth rate
-            
-            
-            
+            x2 = input("Would you like to filter by growth rate: ")
+            while ((x2.lower()!='yes') and (x2.lower()!='no')):
+                try: 
+                    x21=input('Error, please input yes or no: ')
+                except ValueError:
+                    pass
+            #carry out function when yes        
+            if x2.lower() == "yes":
+                minimum = float(input("What would you like the minimum growth rate to be: "))
+                maximum = float(input("What would you like the maximum growth rate to be: "))
+                #an empty array with arbitrary values inorder to stack
+                data1 = [-1,-1,-1]
+                for x in data:
+                    if x[1]>=minimum and x[1]<=maximum:
+                        data1=np.vstack((data1,x))
+                print('Growth Rate Filter Applied')
+                data = data1[1:,:]
+            if x2.lower() == "no":
+                pass
+
             #print(data1)
             #print(data)
     elif selection==3:
@@ -204,8 +220,15 @@ while loop:
            print('Error please load data first!')
         else:
             print("Display Statistics has been selected")
-            #needs another option menu to have an input for statistic
-           # print(dataStatistics(data,statistic))
+            statistic = input("What statistic would you like to find: ")
+            while ((statistic!='Mean Temperature') and (statistic!='Mean Growth rate') and (statistic!='Std Temperature') and (statistic!='Std Growth rate') and (statistic!='Rows') and (statistic!='Mean Cold Growth rate') and (statistic!='Mean Hot Growth rate')):
+                try: 
+                    statistic=input('Error, please input Mean Temperature, Mean Growth rate, Std Temperature, Std Growth rate, Rows, Mean Cold Growth rate, or Mean Hot Growth rate: ')
+                except ValueError:
+                    pass
+            if ((statistic=='Mean Temperature') or (statistic=='Mean Growth rate') or (statistic=='Std Temperature') or (statistic=='Std Growth rate') or (statistic=='Rows') or (statistic=='Mean Cold Growth rate') or (statistic=='Mean Hot Growth rate')):
+                print(dataStatistics(data,statistic))
+            
     elif selection==4:
         if np.array_equal(data,dataEmpty):
            print('Error please load data first!')
