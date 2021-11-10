@@ -1,5 +1,23 @@
 import numpy as np
 import matplotlib.pyplot as plt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 filenamein=input('Please enter filename:')
 def dataLoad(filename):
     mat1=np.loadtxt(filename)
@@ -117,6 +135,6 @@ def dataPlot(data):
     #print(Temperature3)
     #print(Temperature4)
    # print(data)
-print(dataPlot(data))
-print(data)
+#print(dataPlot(data))
+#print(data)
 print(dataStatistics(data,'Mean Temperature'))
