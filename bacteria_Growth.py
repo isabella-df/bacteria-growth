@@ -138,7 +138,7 @@ dataEmpty=[]
 loop=True
 
 while loop:
-    #prints action menut
+    #prints action menu
     print_menu()
     selection = int(input("Please select a number (1-5) from above:"))
     if selection==1:
@@ -176,14 +176,15 @@ while loop:
                 print("Bacteria 4 corresponds to Brochothrix thermosphacta.")
                 #make bacteria input an integer
                 bacteria = int(input("What numerical value of bacteria would you like to filter the data to: "))
-                #an empty array with arbitrary values inorder to stack
+                #an empty array with arbitrary values in order to stack
                 data1 = [-1,-1,-1]
-                #if a number that is not an integer between 1-4 is entered then we print an error message
+                #if a number that is not an integer between 1-4 is entered an error message will be printed
                 while (bacteria!=1 and bacteria!=2 and bacteria!=3 and bacteria!=4):
                     try:
                         bacteria=int(input('Error! Please input an integer value from 1-4!: '))
                     except ValueError:
                         pass
+                #vertically stacks filtered data into a matrix 
                 for x in data:
                     if x[2] == bacteria:
                         data1=np.vstack((data1,x))
@@ -192,17 +193,43 @@ while loop:
             if x1.lower() == "no":
                 pass
             
-            #filtering by growth rate
+            #filtering by growth rate  
             x2 = input("Would you like to filter by growth rate: ")
-            while ((x2.lower()!='yes') and (x2.lower()!='no')):
+            while ((x2.lower()!='yes') and (x2.lower()!='no')): #maybe should be or?
                 try: 
-                    x21=input('Error, please input yes or no: ')
+                    x2=input('Error, please input yes or no: ')#issue with this
                 except ValueError:
                     pass
             #carry out function when yes        
             if x2.lower() == "yes":
-                minimum = float(input("What would you like the minimum growth rate to be: "))
-                maximum = float(input("What would you like the maximum growth rate to be: "))
+                print("Minimum value of the data set: " + str(np.amin(data[:,1])))
+                print("Maximum value of the data set: " + str(np.amax(data[:,1])))
+                while True:
+                    try:
+                        minimum = float(input("Please select a value within the numbers given above. What would you like the minimum growth rate to be? "))
+                        break
+                    except ValueError:
+                        pass
+                while (minimum > np.amax(data[:,1]) or minimum < np.amin(data[:,1])): #should we make it so only values within this range can be selected?
+                    try:
+                        print("Minimum value of the data set: " + str(np.amin(data[:,1])))
+                        print("Maximum value of the data set: " + str(np.amax(data[:,1])))
+                        minimum = float(input("Invalid entry. Please enter a value within the numbers given above. "))
+                    except ValueError:
+                        pass 
+                while True:
+                    try:
+                        maximum = float(input("Please select a value within the numbers given above. What would you like the maximum growth rate to be?  "))
+                        break
+                    except ValueError:
+                        pass
+                while (maximum < np.amin(data[:,1]) or maximum > np.amax(data[:,1])): #need to add another statement here?
+                    try:
+                        print("Minimum value of the data set: " + str(np.amin(data[:,1])))
+                        print("Maximum value of the data set: " + str(np.amax(data[:,1])))
+                        maximum = float(input("Invalid entry. Please enter a value within the numbers given above. "))
+                    except ValueError:
+                         pass
                 #an empty array with arbitrary values inorder to stack
                 data1 = [-1,-1,-1]
                 for x in data:
@@ -219,6 +246,7 @@ while loop:
         if np.array_equal(data,dataEmpty):
            print('Error please load data first!')
         else:
+            #prints error when something in entered that is not a statistic name.
             print("Display Statistics has been selected")
             statistic = input("What statistic would you like to find: ")
             while ((statistic!='Mean Temperature') and (statistic!='Mean Growth rate') and (statistic!='Std Temperature') and (statistic!='Std Growth rate') and (statistic!='Rows') and (statistic!='Mean Cold Growth rate') and (statistic!='Mean Hot Growth rate')):
@@ -235,8 +263,8 @@ while loop:
         else:
             print(dataPlot(data))        
     elif selection==5:
-        print("Quit has been selected")
+        print("Quit has been selected. Have a nice day! :)")
         loop=False 
     else:
-        print("Please choose a number from 1-5. Press any key to try again.")
+        print("Please choose a number from 1-5.")
 #print(data)
