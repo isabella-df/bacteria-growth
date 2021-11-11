@@ -31,18 +31,18 @@ def dataLoad(filename):
 #print(dataLoad('testforreals.txt'))
 
 def dataStatistics(data, statistic):
-    if statistic == 'Mean Temperature':
+    if statistic.lower() == 'mean temperature':
     #takes the mean of the 0th column     
         result = data[:,0].mean()
-    if statistic == 'Mean Growth rate': 
+    if statistic.lower() == 'mean growth rate': 
         result = data[:,1].mean()
-    if statistic == 'Std Temperature':
+    if statistic.lower() == 'std temperature':
         result = data[:,0].std()
-    if statistic == 'Std Growth rate':
+    if statistic.lower() == 'std growth rate':
         result = data[:,1].std()
-    if statistic == 'Rows':
+    if statistic.lower() == 'rows':
         result = len(data)
-    if statistic == 'Mean Cold Growth rate':
+    if statistic.lower() == 'mean cold growth rate':
     #coldData is a new array where all temps are less than 20    
         coldData = data[data[:,0]< 20]
     #gets the mean of the growth rate of the new array where all temps are less than 20    
@@ -114,6 +114,7 @@ def dataPlot(data):
     plt.title('Growth rate vs Temp')
     plt.legend(loc="upper right")
     plt.show()
+    return 'Graphs have been plotted!'
     #print(np.sort(Temperature1))
     #print(Temperature2)
     #print(Temperature3)
@@ -140,16 +141,19 @@ loop=True
 while loop:
     #prints action menu
     print_menu()
-    selection = int(input("Please select a number (1-5) from above:"))
+    while True:
+        try:            
+            selection = int(input("Please select a number (1-5) from above:"))
+            break
+        except ValueError:
+            pass
     if selection==1:
         print("Load Data has been selected")
         filename=input('Please enter the name of the file you wish to use: ')
-        
         #prints error if file can not be found, asks for valid file input
         while not(os.path.isfile(filename)):
             try:
                 filename = input('File not found. Please input valid filename:')
-                data=dataLoad(filename)
             except ValueError:
                 pass        
         data=dataLoad(filename)
@@ -223,11 +227,14 @@ while loop:
                         break
                     except ValueError:
                         pass
-                while (maximum < np.amin(data[:,1]) or maximum > np.amax(data[:,1])): #need to add another statement here?
+                while (maximum < np.amin(data[:,1]) or maximum > np.amax(data[:,1]) or maximum<minimum): #need to add another statement here?
                     try:
                         print("Minimum value of the data set: " + str(np.amin(data[:,1])))
                         print("Maximum value of the data set: " + str(np.amax(data[:,1])))
-                        maximum = float(input("Invalid entry. Please enter a value within the numbers given above. "))
+                        if maximum < np.amin(data[:,1]) or maximum > np.amax(data[:,1]):
+                            maximum = float(input("Invalid entry. Please enter a value within the numbers given above. "))
+                        else:
+                            maximum=float(input('Invalid entry. Please enter a maximum value above your minimum:'))
                     except ValueError:
                          pass
                 #an empty array with arbitrary values inorder to stack
@@ -236,6 +243,7 @@ while loop:
                     if x[1]>=minimum and x[1]<=maximum:
                         data1=np.vstack((data1,x))
                 print('Growth Rate Filter Applied')
+                #print(data1)
                 data = data1[1:,:]
             if x2.lower() == "no":
                 pass
@@ -249,12 +257,12 @@ while loop:
             #prints error when something in entered that is not a statistic name.
             print("Display Statistics has been selected")
             statistic = input("What statistic would you like to find: ")
-            while ((statistic!='Mean Temperature') and (statistic!='Mean Growth rate') and (statistic!='Std Temperature') and (statistic!='Std Growth rate') and (statistic!='Rows') and (statistic!='Mean Cold Growth rate') and (statistic!='Mean Hot Growth rate')):
+            while ((statistic.lower()!='mean temperature') and (statistic.lower()!='mean growth rate') and (statistic.lower()!='std temperature') and (statistic.lower()!='std growth rate') and (statistic.lower()!='rows') and (statistic.lower()!='mean cold growth rate') and (statistic.lower()!='mean hot growth rate')):
                 try: 
                     statistic=input('Error, please input Mean Temperature, Mean Growth rate, Std Temperature, Std Growth rate, Rows, Mean Cold Growth rate, or Mean Hot Growth rate: ')
                 except ValueError:
                     pass
-            if ((statistic=='Mean Temperature') or (statistic=='Mean Growth rate') or (statistic=='Std Temperature') or (statistic=='Std Growth rate') or (statistic=='Rows') or (statistic=='Mean Cold Growth rate') or (statistic=='Mean Hot Growth rate')):
+            if ((statistic.lower()=='mean temperature') or (statistic.lower()=='mean growth rate') or (statistic.lower()=='std temperature') or (statistic.lower()=='std growth rate') or (statistic.lower()=='rows') or (statistic.lower()=='mean cold growth rate') or (statistic.lower()=='mean hot growth rate')):
                 print(dataStatistics(data,statistic))
             
     elif selection==4:
